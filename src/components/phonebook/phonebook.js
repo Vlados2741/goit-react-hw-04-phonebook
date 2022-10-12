@@ -22,7 +22,7 @@ export const Phonebook = (props) => {
 
   const handleSubmit = event => {
     event.preventDefault();
-    props.onAddContacs({ name, number });
+    props.AddContact({ name, number });
     setName("");
     setNumber("");
   };

@@ -14,11 +14,6 @@ const App = () => {
     localStorage.setItem('phonebook', JSON.stringify(contacts));
   }, [contacts]);
 
-  const dublicateFinder = ({ name }) => {
-    const result = contacts.find(item => item.name === name);
-    return result;
-  };
-
   const addContact = data => {
     if (dublicateFinder(data)) {
       return alert(`${data.name} уже существует в списке контактов`);
@@ -30,8 +25,13 @@ const App = () => {
     setContacts([...contacts, newContact]);
   };
 
-  const removeContact = name => {
-    setContacts(contacts.filter(item => item.name !== name));
+  const removeContact = id => {
+    setContacts(contacts.filter(item => item.id !== id));
+  };
+
+  const dublicateFinder = ({ name }) => {
+    const result = contacts.find(item => item.name === name);
+    return result;
   };
 
   const handlefilter = evt => {
@@ -39,14 +39,12 @@ const App = () => {
     setFilter(value);
   };
 
-  const getFilter = () => {
+  const filterOption = () => {
     if (!filter) {
       return contacts;
     }
-    const normalisedFilter = filter.toLowerCase();
     const filterContact = contacts.filter(({ name }) => {
-      const normalisedName = name.toLowerCase();
-      const result = normalisedName.includes(normalisedFilter);
+      const result = name.toLowerCase().includes(filter.toLowerCase());
       return result;
     });
     return filterContact;
@@ -56,18 +54,18 @@ const App = () => {
       <>
       <h1>Phonebook</h1>
         <Phonebook
-          onAddContacs={addContact}
+          AddContact={addContact}
         />
         {contacts.length !== 0 && (
           <>
             <h2>Contacts :</h2>
             <PhonebookFilter
-              onChange={filterChange}
+              onFilter={handlefilter}
               value={filter}
             />
             <PhonebookList
-              items={getFilter()}
-              onRemove={removeContact}
+              list={filterOption()}
+              onContactRemover={removeContact}
             />
           </>
         )}
