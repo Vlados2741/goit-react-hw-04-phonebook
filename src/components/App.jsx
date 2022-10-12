@@ -6,7 +6,7 @@ import {PhonebookList} from './phonebook/phonebookList';
 import './phonebook/phonebook-style.css';
 
 
-const App = () => {
+export const App = () => {
   const [contacts, setContacts] = useState(JSON.parse(localStorage.getItem('phonebook')) ?? [])
   const [filter, setFilter] = useState('')
 
@@ -72,5 +72,3 @@ const App = () => {
       </>
     );
   }
-
-export {App}
