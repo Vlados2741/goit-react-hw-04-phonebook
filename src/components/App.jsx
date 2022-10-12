@@ -7,20 +7,20 @@ import './phonebook/phonebook-style.css';
 
 
 const App = () => {
-  const [contacts, setContacts] = useState(JSON.parse(localStorage.getItem('phone-list')) ?? [])
+  const [contacts, setContacts] = useState(JSON.parse(localStorage.getItem('phonebook')) ?? [])
   const [filter, setFilter] = useState('')
 
   useEffect(() => {
-    localStorage.setItem('phone-list', JSON.stringify(contacts));
+    localStorage.setItem('phonebook', JSON.stringify(contacts));
   }, [contacts]);
 
-  const isDublicate = ({ name }) => {
+  const dublicateFinder = ({ name }) => {
     const result = contacts.find(item => item.name === name);
     return result;
   };
 
-  const addContacts = data => {
-    if (isDublicate(data)) {
+  const addContact = data => {
+    if (dublicateFinder(data)) {
       return alert(`${data.name} уже существует в списке контактов`);
     }
     const newContact = {
@@ -30,11 +30,11 @@ const App = () => {
     setContacts([...contacts, newContact]);
   };
 
-  const removeContact = id => {
-    setContacts(contacts.filter(item => item.id !== id));
+  const removeContact = name => {
+    setContacts(contacts.filter(item => item.name !== name));
   };
 
-  const filterChange = evt => {
+  const handlefilter = evt => {
     const { value } = evt.currentTarget;
     setFilter(value);
   };
@@ -56,7 +56,7 @@ const App = () => {
       <>
       <h1>Phonebook</h1>
         <Phonebook
-          onAddContacs={addContacts}
+          onAddContacs={addContact}
         />
         {contacts.length !== 0 && (
           <>
