@@ -1,39 +1,43 @@
-import React from 'react';
+import {useState} from 'react';
 import { nanoid } from 'nanoid';
 
-export class Phonebook extends React.Component {
-  state = {
-    name: '',
-    number: '',
-  };
+export const Phonebook = (props) => {
+  const [name, setName] = useState("");
+  const [number, setNumber] = useState("");
 
-  handleChange = event => {
+  const handleChange = event => {
     const { name, value } = event.currentTarget;
-    this.setState({ [name]: value });
+    switch (name) {
+      case 'name':
+        setName(value);
+        break;
+      case 'number':
+        setNumber(value);
+        break;
+      
+      default:
+        return;
+    }
   };
 
-  handleSubmit = event => {
+  const handleSubmit = event => {
     event.preventDefault();
-    const { name, number } = this.state;
-    this.props.onAddContacs({ name, number });
-    this.setState({
-      name: '',
-      number: '',
-    });
+    props.onAddContacs({ name, number });
+    setName("");
+    setNumber("");
   };
 
-  render() {
     const nameId = nanoid(5);
     const numberId = nanoid(5);
     return (
-      <form className="phonebook__form" onSubmit={this.handleSubmit}>
+      <form className="phonebook__form" onSubmit={handleSubmit}>
         <label htmlFor={nameId}>Name</label>
         <input
           type="text"
           name="name"
           id={nameId}
-          value={this.state.name}
-          onChange={this.handleChange}
+          value={name}
+          onChange={handleChange}
           autoComplete="off"
           pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
           title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
@@ -44,8 +48,8 @@ export class Phonebook extends React.Component {
           type="tel"
           name="number"
           id={numberId}
-          value={this.state.number}
-          onChange={this.handleChange}
+          value={number}
+          onChange={handleChange}
           autoComplete="off"
           pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
           title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
@@ -57,4 +61,3 @@ export class Phonebook extends React.Component {
       </form>
     );
   }
-}

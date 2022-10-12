@@ -1,4 +1,5 @@
 export const PhonebookList = ({ items, onRemove }) => {
+  const itemsArray = Object.keys(items);
   const itemList = items.map(({ id, name, number }) => {
     return (
       <li key={id} className="list-item">
