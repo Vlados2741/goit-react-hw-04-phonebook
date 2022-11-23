@@ -1,14 +1,15 @@
-import { useState, useEffect }  from "react";
+import { useState, useEffect } from 'react';
 import { nanoid } from 'nanoid';
-import { Phonebook } from "./phonebook/phonebook";
-import {PhonebookFilter} from './phonebook/phonebookFilter';
-import {PhonebookList} from './phonebook/phonebookList';
+import { Phonebook } from './phonebook/phonebook';
+import { PhonebookFilter } from './phonebook/phonebookFilter';
+import { PhonebookList } from './phonebook/phonebookList';
 import './phonebook/phonebook-style.css';
 
-
 export const App = () => {
-  const [contacts, setContacts] = useState(JSON.parse(localStorage.getItem('phonebook')) ?? [])
-  const [filter, setFilter] = useState('')
+  const [contacts, setContacts] = useState(
+    JSON.parse(localStorage.getItem('phonebook')) ?? []
+  );
+  const [filter, setFilter] = useState('');
 
   useEffect(() => {
     localStorage.setItem('phonebook', JSON.stringify(contacts));
@@ -39,7 +40,7 @@ export const App = () => {
     setFilter(value);
   };
 
-  const filterOption = () => {
+  const filteredContacts = () => {
     if (!filter) {
       return contacts;
     }
@@ -49,26 +50,21 @@ export const App = () => {
     });
     return filterContact;
   };
-  
-    return (
-      <>
+
+  return (
+    <>
       <h1>Phonebook</h1>
-        <Phonebook
-          AddContact={addContact}
-        />
-        {contacts.length !== 0 && (
-          <>
-            <h2>Contacts :</h2>
-            <PhonebookFilter
-              onFilter={handlefilter}
-              value={filter}
-            />
-            <PhonebookList
-              list={filterOption()}
-              onContactRemover={removeContact}
-            />
-          </>
-        )}
-      </>
-    );
-  }
+      <Phonebook AddContact={addContact} />
+      {contacts.length !== 0 && (
+        <>
+          <h2>Contacts :</h2>
+          <PhonebookFilter onFilter={handlefilter} value={filter} />
+          <PhonebookList
+            list={filteredContacts()}
+            onContactRemover={removeContact}
+          />
+        </>
+      )}
+    </>
+  );
+};
